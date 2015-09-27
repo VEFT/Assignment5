@@ -18,6 +18,16 @@ namespace CoursesAPI.Controllers
 			_service = new CoursesServiceProvider(new UnitOfWork<AppDataContext>());
 		}
 
+        /// <summary>
+        /// Returns a list of courses belonging to a given semester and given page.
+        /// If no semester is provided, the current semester will be used.
+        /// IF no page is provided, the first page will be used.
+        /// The method gets the accept-language from the header and sends the requested
+        /// language to the service provider.
+        /// </summary>
+        /// <param name="semester">The query semester</param>
+        /// <param name="page">1-based index of the requested page</param>
+        /// <returns>List of courses (DTO class)</returns>
 		[HttpGet]
 		[AllowAnonymous]
 		public IHttpActionResult GetCoursesBySemester(string semester = null, int page = 1)

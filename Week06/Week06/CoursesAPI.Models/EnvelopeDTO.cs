@@ -6,8 +6,9 @@ namespace CoursesAPI.Models
     /// <summary>
     /// When requesting a list of courses, the application should return max 10 courses. 
     /// The list is returned via this envelope class.
+    /// The envelope class is generic.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
+    /// <typeparam name="T">The requested type of the data</typeparam>
     public class EnvelopeDTO<T>
     {
         /// <summary>
@@ -55,10 +56,10 @@ namespace CoursesAPI.Models
         /// The envelope object that includes all the necessary information,
         /// both our data, and the structure of our page.
         /// </summary>
-        /// <param name="items"></param>
-        /// <param name="pageNo"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="totalRecordCount"></param>
+        /// <param name="items">Tha items that are added to the list</param>
+        /// <param name="pageNo">The current page number</param>
+        /// <param name="pageSize">The number of items on each page</param>
+        /// <param name="totalRecordCount">The total number of items in the collection</param>
         public EnvelopeDTO(IEnumerable<T> items, int pageNo, int pageSize, long totalRecordCount)
         {
             Data = new List<T>(items);
