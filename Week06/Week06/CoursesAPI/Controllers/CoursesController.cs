@@ -2,6 +2,7 @@
 using CoursesAPI.Models;
 using CoursesAPI.Services.DataAccess;
 using CoursesAPI.Services.Services;
+using System.Diagnostics;
 
 namespace CoursesAPI.Controllers
 {
@@ -25,14 +26,14 @@ namespace CoursesAPI.Controllers
             var languages = Request.Headers.AcceptLanguage;
             var requestedLanguage = "";
 
-            /*
+            
             int i = 0;
             foreach(var language in languages)
             {
                 Debug.WriteLine("i: " + i + " " + language);
                 i++;
             }
-            */
+            
 
             if(languages.Count == 0)
             {
@@ -41,6 +42,7 @@ namespace CoursesAPI.Controllers
             else
             {
                 //requestedLanguage = languages.
+                
             }
 
 			return Ok(_service.GetCourseInstancesBySemester(semester, page));
