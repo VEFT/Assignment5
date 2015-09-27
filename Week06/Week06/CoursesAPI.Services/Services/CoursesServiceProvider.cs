@@ -79,6 +79,10 @@ namespace CoursesAPI.Services.Services
 
             allCoursesList = allCourses.ToList();
 
+            /* If the page requested is a number less than 1,
+             * we don't want pageCourseList to be empty and 
+             * simply return an empty page.
+             */
             if (page > 0)
             { 
                 pageCoursesList = allCourses.OrderBy(c => c.CourseInstanceID).Skip((page - 1) * PAGECOUNT).Take(PAGECOUNT).ToList();
