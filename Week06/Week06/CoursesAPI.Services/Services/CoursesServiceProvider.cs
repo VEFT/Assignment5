@@ -52,7 +52,7 @@ namespace CoursesAPI.Services.Services
 		/// <param name="semester"></param>
 		/// <param name="page">1-based index of the requested page.</param>
 		/// <returns></returns>
-		public List<CourseInstanceDTO> GetCourseInstancesBySemester(string semester = null, int page = 1)
+		public List<CourseInstanceDTO> GetCourseInstancesBySemester(string semester = null, int page = 1, string requestLanguage)
 		{
 			if (string.IsNullOrEmpty(semester))
 			{
