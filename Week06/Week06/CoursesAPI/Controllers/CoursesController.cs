@@ -19,9 +19,31 @@ namespace CoursesAPI.Controllers
 		[AllowAnonymous]
 		public IHttpActionResult GetCoursesBySemester(string semester = null, int page = 1)
 		{
-			// TODO: figure out the requested language (if any!)
-			// and pass it to the service provider!
-			return Ok(_service.GetCourseInstancesBySemester(semester, page));
+            // TODO: figure out the requested language (if any!)
+            // and pass it to the service provider!
+
+            var languages = Request.Headers.AcceptLanguage;
+            var requestedLanguage = "";
+
+            /*
+            int i = 0;
+            foreach(var language in languages)
+            {
+                Debug.WriteLine("i: " + i + " " + language);
+                i++;
+            }
+            */
+
+            if(languages.Count == 0)
+            {
+                requestedLanguage = "en";
+            }
+            else
+            {
+                //requestedLanguage = languages.
+            }
+
+            return Ok(_service.GetCourseInstancesBySemester(semester, page));
 		}
 
 		/// <summary>
