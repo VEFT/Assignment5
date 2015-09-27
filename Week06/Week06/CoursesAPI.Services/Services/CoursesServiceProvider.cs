@@ -52,27 +52,41 @@ namespace CoursesAPI.Services.Services
 		/// <param name="semester"></param>
 		/// <param name="page">1-based index of the requested page.</param>
 		/// <returns></returns>
-		public List<CourseInstanceDTO> GetCourseInstancesBySemester(string requestLanguage, string semester = null, int page = 1)
+		public EnvelopeDTO<CourseInstanceDTO> GetCourseInstancesBySemester(string requestLanguage, string semester = null, int page = 1)
 		{
             const string ICELANDIC = "is";
             const string DEFAULT_SEMESTER = "20153";
+            const int PAGECOUNT = 10;
+
 			if (string.IsNullOrEmpty(semester))
 			{
 				semester = DEFAULT_SEMESTER;
 			}
 
-			var courses = (from c in _courseInstances.All()
-				join ct in _courseTemplates.All() on c.CourseID equals ct.CourseID
-				where c.SemesterID == semester
-				select new CourseInstanceDTO
-				{
-					Name               = (requestLanguage == ICELANDIC ? ct.Name : ct.NameEN),
-					TemplateID         = ct.CourseID,
-					CourseInstanceID   = c.ID,
-					MainTeacher        = ""
-				}).ToList();
+            var pageCoursesList = new List<CourseInstanceDTO>();
+            var allCoursesList = new List<CourseInstanceDTO>();
 
-			return courses;
+            var allCourses = (from c in _courseInstances.All()
+                join ct in _courseTemplates.All() on c.CourseID equals ct.CourseID
+                where c.SemesterID == semester
+                select new CourseInstanceDTO
+                {
+                    Name = (requestLanguage == ICELANDIC ? ct.Name : ct.NameEN),
+                    TemplateID = ct.CourseID,
+                    CourseInstanceID = c.ID,
+                    MainTeacher = ""
+                });
+
+            allCoursesList = allCourses.ToList();
+
+            if (page > 0)
+            { 
+                pageCoursesList = allCourses.OrderBy(c => c.CourseInstanceID).Skip((page - 1) * PAGECOUNT).Take(PAGECOUNT).ToList();
+            }
+
+            EnvelopeDTO<CourseInstanceDTO> envelope = new EnvelopeDTO<CourseInstanceDTO>(pageCoursesList, page, PAGECOUNT, allCoursesList.Count);
+
+			return envelope;
 		}
 	}
 }

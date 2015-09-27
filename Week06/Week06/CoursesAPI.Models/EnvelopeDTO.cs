@@ -1,4 +1,7 @@
-﻿namespace CoursesAPI.Models
+﻿using System;
+using System.Collections.Generic;
+
+namespace CoursesAPI.Models
 {
     /// <summary>
     /// 
@@ -9,17 +12,12 @@
         /// <summary>
         /// 
         /// </summary>
-        public T items { get; set; }
-
-        /// <summary>
-        /// 
-        /// </summary>
         public class PagingInfo
         {
             /// <summary>
             /// 
             /// </summary>
-            public int PageCount { get; set; }
+            public int PageNo { get; set; }
 
             /// <summary>
             /// 
@@ -29,17 +27,44 @@
             /// <summary>
             /// 
             /// </summary>
-            public int PageNumber { get; set; }
+            public int PageCount { get; set; }
 
             /// <summary>
             /// 
             /// </summary>
-            public int TotalNumberOfItems { get; set; }
+            public long TotalRecordCount { get; set; }
+
         }
 
         /// <summary>
         /// 
         /// </summary>
-        public PagingInfo Paging { get; set; }
+        public List<T> Data { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public PagingInfo Paging { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="items"></param>
+        /// <param name="pageNo"></param>
+        /// <param name="pageSize"></param>
+        /// <param name="totalRecordCount"></param>
+        public EnvelopeDTO(IEnumerable<T> items, int pageNo, int pageSize, long totalRecordCount)
+        {
+            Data = new List<T>(items);
+            Paging = new PagingInfo
+            {
+                PageNo = pageNo,
+                PageSize = pageSize,
+                TotalRecordCount = totalRecordCount,
+                PageCount = totalRecordCount > 0
+                    ? (int)Math.Ceiling(totalRecordCount / (double)pageSize)
+                    : 0
+            };
+        }
     }
 }

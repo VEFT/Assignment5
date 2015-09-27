@@ -29,8 +29,12 @@ namespace CoursesAPI.Controllers
 
             if(languages.Count != 0)
             {
+                int i = 0;
                 foreach(var language in languages)
                 {
+                    Debug.WriteLine("i: " + i);
+                    Debug.WriteLine("Value" + language.Value);
+                    Debug.WriteLine("Quality: " + language.Quality);
                     if (language.Quality == null)
                     {
                         requestedLanguage = language.Value;
@@ -41,6 +45,7 @@ namespace CoursesAPI.Controllers
                         highestCurrentQuality = language.Quality;
                         requestedLanguage = language.Value;
                     }
+                    i++;
                 }
 
                 if (requestedLanguage.Substring(0, 2) == ENGLISH) {
@@ -54,6 +59,8 @@ namespace CoursesAPI.Controllers
                     requestedLanguage = ENGLISH;
                 }
             }
+
+            Debug.WriteLine("FinalValue: " + requestedLanguage);
 
             return Ok(_service.GetCourseInstancesBySemester(requestedLanguage, semester, page));
 		}
