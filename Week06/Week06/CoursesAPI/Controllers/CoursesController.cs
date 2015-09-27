@@ -20,7 +20,7 @@ namespace CoursesAPI.Controllers
 		public IHttpActionResult GetCoursesBySemester(string semester = null, int page = 1)
 		{
 			// TODO: figure out the requested language (if any!)
-			// and pass it to the service provider!
+			// and pass it to the service provider!  
 			return Ok(_service.GetCourseInstancesBySemester(semester, page));
 		}
 
