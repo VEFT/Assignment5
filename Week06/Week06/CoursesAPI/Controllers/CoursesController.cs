@@ -21,9 +21,9 @@ namespace CoursesAPI.Controllers
 		[AllowAnonymous]
 		public IHttpActionResult GetCoursesBySemester(string semester = null, int page = 1)
 		{
+            const string ICELANDIC = "is";
+            const string ENGLISH = "en";
             var languages = Request.Headers.AcceptLanguage;
-            const string icelandic = "is";
-            const string english = "en";
             string requestedLanguage = "en";
             double? highestCurrentQuality = 0.0;
 
@@ -43,15 +43,15 @@ namespace CoursesAPI.Controllers
                     }
                 }
 
-                if (requestedLanguage.Substring(0, 2) == "en") {
-                    requestedLanguage = english;
+                if (requestedLanguage.Substring(0, 2) == ENGLISH) {
+                    requestedLanguage = ENGLISH;
                 }
-                else if (requestedLanguage.Substring(0, 2) == "is") {
-                    requestedLanguage = icelandic;
+                else if (requestedLanguage.Substring(0, 2) == ICELANDIC) {
+                    requestedLanguage = ICELANDIC;
                 }
                 else
                 {
-                    requestedLanguage = english;
+                    requestedLanguage = ENGLISH;
                 }
             }
 

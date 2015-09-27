@@ -54,9 +54,11 @@ namespace CoursesAPI.Services.Services
 		/// <returns></returns>
 		public List<CourseInstanceDTO> GetCourseInstancesBySemester(string requestLanguage, string semester = null, int page = 1)
 		{
+            const string ICELANDIC = "is";
+            const string DEFAULT_SEMESTER = "20153";
 			if (string.IsNullOrEmpty(semester))
 			{
-				semester = "20153";
+				semester = DEFAULT_SEMESTER;
 			}
 
 			var courses = (from c in _courseInstances.All()
@@ -64,7 +66,7 @@ namespace CoursesAPI.Services.Services
 				where c.SemesterID == semester
 				select new CourseInstanceDTO
 				{
-					Name               = (requestLanguage == "is" ? ct.Name : ct.NameEN),
+					Name               = (requestLanguage == ICELANDIC ? ct.Name : ct.NameEN),
 					TemplateID         = ct.CourseID,
 					CourseInstanceID   = c.ID,
 					MainTeacher        = ""
