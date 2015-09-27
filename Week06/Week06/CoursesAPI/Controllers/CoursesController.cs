@@ -3,7 +3,8 @@ using CoursesAPI.Models;
 using CoursesAPI.Services.DataAccess;
 using CoursesAPI.Services.Services;
 using System.Diagnostics;
-using System.Net.Http.Headers;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace CoursesAPI.Controllers
 {
@@ -24,43 +25,30 @@ namespace CoursesAPI.Controllers
             const string ICELANDIC = "is";
             const string ENGLISH = "en";
             var languages = Request.Headers.AcceptLanguage;
-            string requestedLanguage = "en";
-            double? highestCurrentQuality = 0.0;
+            var dictionary = new Dictionary<string, double?>();
+            string requestedLanguage = ENGLISH;
 
-            if(languages.Count != 0)
+            if (languages.Count != 0)
             {
-                int i = 0;
                 foreach(var language in languages)
                 {
-                    Debug.WriteLine("i: " + i);
-                    Debug.WriteLine("Value" + language.Value);
-                    Debug.WriteLine("Quality: " + language.Quality);
                     if (language.Quality == null)
                     {
-                        requestedLanguage = language.Value;
-                        break;
+                        dictionary.Add(language.Value, 1.0);
                     }
-                    else if (highestCurrentQuality < language.Quality)
+                    else
                     {
-                        highestCurrentQuality = language.Quality;
-                        requestedLanguage = language.Value;
+                        dictionary.Add(language.Value, language.Quality);
                     }
-                    i++;
                 }
 
-                if (requestedLanguage.Substring(0, 2) == ENGLISH) {
-                    requestedLanguage = ENGLISH;
-                }
-                else if (requestedLanguage.Substring(0, 2) == ICELANDIC) {
-                    requestedLanguage = ICELANDIC;
-                }
-                else
+                var validLanguages = dictionary.Where(d => d.Key.Substring(0, 2) == ENGLISH || d.Key.Substring(0, 2) == ICELANDIC);
+
+                if(validLanguages != null)
                 {
-                    requestedLanguage = ENGLISH;
+                    requestedLanguage = validLanguages.OrderByDescending(d => d.Value).FirstOrDefault().Key;
                 }
             }
-
-            Debug.WriteLine("FinalValue: " + requestedLanguage);
 
             return Ok(_service.GetCourseInstancesBySemester(requestedLanguage, semester, page));
 		}
