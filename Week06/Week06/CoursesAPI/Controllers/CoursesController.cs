@@ -3,6 +3,7 @@ using CoursesAPI.Models;
 using CoursesAPI.Services.DataAccess;
 using CoursesAPI.Services.Services;
 using System.Diagnostics;
+using System.Net.Http.Headers;
 
 namespace CoursesAPI.Controllers
 {
@@ -20,32 +21,41 @@ namespace CoursesAPI.Controllers
 		[AllowAnonymous]
 		public IHttpActionResult GetCoursesBySemester(string semester = null, int page = 1)
 		{
-			// TODO: figure out the requested language (if any!)
-			// and pass it to the service provider!
-
             var languages = Request.Headers.AcceptLanguage;
-            var requestedLanguage = "";
+            const string icelandic = "is";
+            const string english = "en";
+            string requestedLanguage = "en";
+            double? highestCurrentQuality = 0.0;
 
-            
-            int i = 0;
-            foreach(var language in languages)
+            if(languages.Count != 0)
             {
-                Debug.WriteLine("i: " + i + " " + language);
-                i++;
-            }
-            
+                foreach(var language in languages)
+                {
+                    if (language.Quality == null)
+                    {
+                        requestedLanguage = language.Value;
+                        break;
+                    }
+                    else if (highestCurrentQuality < language.Quality)
+                    {
+                        highestCurrentQuality = language.Quality;
+                        requestedLanguage = language.Value;
+                    }
+                }
 
-            if(languages.Count == 0)
-            {
-                requestedLanguage = "en";
-            }
-            else
-            {
-                //requestedLanguage = languages.
-                
+                if (requestedLanguage.Substring(0, 2) == "en") {
+                    requestedLanguage = english;
+                }
+                else if (requestedLanguage.Substring(0, 2) == "is") {
+                    requestedLanguage = icelandic;
+                }
+                else
+                {
+                    requestedLanguage = english;
+                }
             }
 
-			return Ok(_service.GetCourseInstancesBySemester(semester, page));
+            return Ok(_service.GetCourseInstancesBySemester(semester, page, requestedLanguage));
 		}
 
 		/// <summary>
