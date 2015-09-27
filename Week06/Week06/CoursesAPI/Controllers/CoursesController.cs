@@ -24,6 +24,8 @@ namespace CoursesAPI.Controllers
 		{
             const string ICELANDIC = "is";
             const string ENGLISH = "en";
+
+            // Get accept-languages from the header
             var languages = Request.Headers.AcceptLanguage;
             var dictionary = new Dictionary<string, double?>();
             string requestedLanguage = ENGLISH;
@@ -32,6 +34,7 @@ namespace CoursesAPI.Controllers
             {
                 foreach(var language in languages)
                 {
+                    // If the quality is equal to null than we set it as 1.0.
                     if (language.Quality == null)
                     {
                         dictionary.Add(language.Value, 1.0);
@@ -42,8 +45,10 @@ namespace CoursesAPI.Controllers
                     }
                 }
 
+                // Get only the valid languages. I.e. languages that starts with "en" or "is".
                 var validLanguages = dictionary.Where(d => d.Key.Substring(0, 2) == ENGLISH || d.Key.Substring(0, 2) == ICELANDIC);
 
+                // If there are not valid languages than we use the default one which is "en".
                 if(validLanguages != null)
                 {
                     requestedLanguage = validLanguages.OrderByDescending(d => d.Value).FirstOrDefault().Key;
