@@ -55,7 +55,7 @@ namespace CoursesAPI.Controllers
                 }
             }
 
-            return Ok(_service.GetCourseInstancesBySemester(semester, page, requestedLanguage));
+            return Ok(_service.GetCourseInstancesBySemester(requestedLanguage, semester, page));
 		}
 
 		/// <summary>
