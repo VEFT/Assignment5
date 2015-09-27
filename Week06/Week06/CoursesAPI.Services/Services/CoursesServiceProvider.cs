@@ -45,13 +45,15 @@ namespace CoursesAPI.Services.Services
 		}
 
 		/// <summary>
-		/// You should write tests for this function. You will also need to
-		/// modify it, such that it will correctly return the name of the main
-		/// teacher of each course.
+		/// A method that accepts as input the language of the request, a semester 
+        /// and a page number, and returns the course instances that appear
+        /// on said page in the given language (given that the page number was valid).
 		/// </summary>
-		/// <param name="semester"></param>
+        /// <param name="requestLanguage">The language of the request (i.e. "is" or "en")</param>
+		/// <param name="semester">The query semester</param>
 		/// <param name="page">1-based index of the requested page.</param>
-		/// <returns></returns>
+		/// <returns>An envelope containing both our data (the courses)
+        /// and the paging information</returns>
 		public EnvelopeDTO<CourseInstanceDTO> GetCourseInstancesBySemester(string requestLanguage, string semester = null, int page = 1)
 		{
             const string ICELANDIC = "is";
@@ -80,7 +82,7 @@ namespace CoursesAPI.Services.Services
             allCoursesList = allCourses.ToList();
 
             /* If the page requested is a number less than 1,
-             * we don't want pageCourseList to be empty and 
+             * we want pageCourseList to be empty and 
              * simply return an empty page.
              */
             if (page > 0)
