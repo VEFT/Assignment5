@@ -52,7 +52,8 @@ namespace CoursesAPI.Services.Services
         /// <param name="requestLanguage">The language of the request (i.e. "is" or "en")</param>
 		/// <param name="semester">The query semester</param>
 		/// <param name="page">1-based index of the requested page.</param>
-		/// <returns></returns>
+		/// <returns>An envelope containing both our data (the courses)
+        /// and the paging information</returns>
 		public EnvelopeDTO<CourseInstanceDTO> GetCourseInstancesBySemester(string requestLanguage, string semester = null, int page = 1)
 		{
             const string ICELANDIC = "is";
