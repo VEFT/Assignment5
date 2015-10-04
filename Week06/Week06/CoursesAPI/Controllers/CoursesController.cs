@@ -24,6 +24,7 @@ namespace CoursesAPI.Controllers
         /// IF no page is provided, the first page will be used.
         /// The method gets the accept-language from the header and sends the requested
         /// language to the service provider.
+        /// 
         /// </summary>
         /// <param name="semester">The query semester</param>
         /// <param name="page">1-based index of the requested page</param>
